@@ -68,7 +68,7 @@ DallasTemperature sensors(&oneWire);
 #define LEDFROID 25 // Température congélation (LED bleue)
 #define LEDALERT 13 // Température trop élevée (LED rouge)
 
-#define INTERVALLE  10 // Intervalle de mesures en secondes
+#define INTERVALLE  300 // Intervalle de mesures en secondes
 
 #define TALERT  -17     // Température d'alerte
 #define TCONG   -30     // Température congélation
@@ -153,6 +153,8 @@ void presentation() {
 void loop() 
 {
   ArduinoOTA.handle();
+  GetTemp();
+  delay(1000);
   timer.run();
 
 }
