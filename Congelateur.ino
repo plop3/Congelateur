@@ -139,6 +139,10 @@ void setup()
   sensors.begin();
   timer.setInterval(INTERVALLE*1000L,GetTemp);
   GetTemp();
+
+  // LEDs
+  ledcSetup(0,5000,0);
+  ledcAttachPin(LEDOK,0);
 }
 
 void presentation() {
@@ -170,7 +174,7 @@ void GetTemp()
       // Température de congélation: LED BLEUE
       digitalWrite(LEDFROID,HIGH);
       digitalWrite(LEDALERT,LOW);
-      digitalWrite(LEDOK,LOW);
+      ledcWrite(LEDOK,0);
       send(msgAlert.set(0));
       
     }
@@ -178,7 +182,7 @@ void GetTemp()
       // Alarme température
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,HIGH);
-      digitalWrite(LEDOK,LOW);
+      ledcWrite(LEDOK,0);
       send(msgAlert.set(1));
       
     }
@@ -186,7 +190,7 @@ void GetTemp()
       // Température correcte LED verte
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,LOW);
-      digitalWrite(LEDOK,HIGH);
+      ledcWrite(LEDOK,120);
       send(msgAlert.set(0));
     }
   } 
