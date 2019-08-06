@@ -137,7 +137,8 @@ void setup()
 
   // 1wire
   sensors.begin();
-  timer.setInterval(INTERVALLE*1000,GetTemp);
+  timer.setInterval(INTERVALLE*1000L,GetTemp);
+  GetTemp();
 }
 
 void presentation() {
@@ -153,10 +154,7 @@ void presentation() {
 void loop() 
 {
   ArduinoOTA.handle();
-  GetTemp();
-  delay(1000);
   timer.run();
-
 }
 
 void GetTemp()
