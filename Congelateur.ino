@@ -141,7 +141,7 @@ void setup()
   GetTemp();
 
   // LEDs
-  ledcSetup(0,5000,0);
+  ledcSetup(0,5000,8);
   ledcAttachPin(LEDOK,0);
 }
 
