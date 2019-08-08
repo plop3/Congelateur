@@ -42,8 +42,7 @@
 SimpleTimer timer;
 
 const char* ssid = "maison";
-const char* password = "password";
-
+const char* password = "B546546AF0";
 // MySensors
 // Enable debug prints to serial monitor
 #define MY_DEBUG 
@@ -84,11 +83,15 @@ void setup()
   Serial.println("Booting");
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  /* while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    Serial.println("Connection Failed! Rebooting...");
+  int nb=5;
+  while ((WiFi.waitForConnectResult() != WL_CONNECTED) && (nb>0)) {
+    Serial.println("Connection Failed! Restart...");
+    //WiFi.begin(ssid, password);
+    nb--;
     delay(5000);
-    ESP.restart();
-  } */
+    //ESP.restart();
+  } 
+  
   // Hostname defaults to esp3232-[MAC]
   ArduinoOTA.setHostname("Congelateur");
 
@@ -141,9 +144,9 @@ void setup()
   GetTemp();
 
   // LEDs
-  ledcSetup(0,5000,8);
-  ledcAttachPin(LEDOK,0);
-}
+  //ledcAttachPin(LEDOK,10);
+  //ledcSetup(10,5000,8);
+  }
 
 void presentation() {
   // Register binary input sensor to gw (they will be created as child devices)
@@ -174,7 +177,7 @@ void GetTemp()
       // Température de congélation: LED BLEUE
       digitalWrite(LEDFROID,HIGH);
       digitalWrite(LEDALERT,LOW);
-      ledcWrite(LEDOK,0);
+      digitalWrite(LEDOK,LOW);
       send(msgAlert.set(0));
       
     }
@@ -182,7 +185,7 @@ void GetTemp()
       // Alarme température
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,HIGH);
-      ledcWrite(LEDOK,0);
+      digitalWrite(LEDOK,LOW);
       send(msgAlert.set(1));
       
     }
@@ -190,7 +193,7 @@ void GetTemp()
       // Température correcte LED verte
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,LOW);
-      ledcWrite(LEDOK,120);
+      digitalWrite(LEDOK,HIGH);
       send(msgAlert.set(0));
     }
   } 
