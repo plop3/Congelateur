@@ -42,7 +42,7 @@
 SimpleTimer timer;
 
 const char* ssid = "maison";
-const char* password = "B546546AF0";
+const char* password = "password";
 // MySensors
 // Enable debug prints to serial monitor
 #define MY_DEBUG 
