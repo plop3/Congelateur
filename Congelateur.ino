@@ -50,6 +50,7 @@ const char* password = "password";
 #define MY_RFM95_IRQ_PIN 26
 #define MY_RFM95_RST_PIN 14
 #define MY_REPEATER_FEATURE
+#define MY_NODE_ID 10
 
 
 //#include <SPI.h>
@@ -64,6 +65,7 @@ DallasTemperature sensors(&oneWire);
 #define ALERT_ID  4
 
 #define LEDOK   12  // Température correcte (LED verte)
+#define COK 0       // Canal LED Ok
 #define LEDFROID 25 // Température congélation (LED bleue)
 #define LEDALERT 13 // Température trop élevée (LED rouge)
 
@@ -134,7 +136,7 @@ void setup()
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
-  pinMode(LEDOK,OUTPUT);
+  //pinMode(LEDOK,OUTPUT);
   pinMode(LEDALERT,OUTPUT);
   pinMode(LEDFROID,OUTPUT);
 
@@ -144,8 +146,8 @@ void setup()
   GetTemp();
 
   // LEDs
-  //ledcAttachPin(LEDOK,10);
-  //ledcSetup(10,5000,8);
+  ledcAttachPin(LEDOK,COK);
+  ledcSetup(COK,5000,8);
   }
 
 void presentation() {
@@ -177,7 +179,8 @@ void GetTemp()
       // Température de congélation: LED BLEUE
       digitalWrite(LEDFROID,HIGH);
       digitalWrite(LEDALERT,LOW);
-      digitalWrite(LEDOK,LOW);
+      //digitalWrite(LEDOK,LOW);
+      ledcWrite(COK, 0);
       send(msgAlert.set(0));
       
     }
@@ -185,7 +188,8 @@ void GetTemp()
       // Alarme température
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,HIGH);
-      digitalWrite(LEDOK,LOW);
+      ledcWrite(COK, 0);
+      //digitalWrite(LEDOK,LOW);
       send(msgAlert.set(1));
       
     }
@@ -193,7 +197,8 @@ void GetTemp()
       // Température correcte LED verte
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,LOW);
-      digitalWrite(LEDOK,HIGH);
+      //digitalWrite(LEDOK,HIGH);
+      ledcWrite(COK, 32);
       send(msgAlert.set(0));
     }
   } 
