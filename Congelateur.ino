@@ -199,7 +199,7 @@ void GetTemp()
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,LOW);
       //digitalWrite(LEDOK,HIGH);
-      ledcWrite(COK, 32);
+      ledcWrite(COK, 8);
       send(msgAlert.set(0));
     }
   } 
