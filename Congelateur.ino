@@ -148,6 +148,7 @@ void setup()
   // LEDs
   ledcAttachPin(LEDOK,COK);
   ledcSetup(COK,5000,8);
+  ledcWrite(COK, 32);
   }
 
 void presentation() {
