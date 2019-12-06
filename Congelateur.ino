@@ -41,8 +41,8 @@
 #include <SimpleTimer.h>
 SimpleTimer timer;
 
-const char* ssid = "maison";
-const char* password = "password";
+const char* ssid = "ssid";
+const char* password = "pwd";
 // MySensors
 // Enable debug prints to serial monitor
 #define MY_DEBUG 
@@ -66,6 +66,7 @@ DallasTemperature sensors(&oneWire);
 
 #define LEDOK   12  // Température correcte (LED verte)
 #define COK 0       // Canal LED Ok
+#define INT 8      // Intensité de la LED verte (OK)
 #define LEDFROID 25 // Température congélation (LED bleue)
 #define LEDALERT 13 // Température trop élevée (LED rouge)
 
@@ -79,7 +80,11 @@ MyMessage msgTemp(TEMP_ID,V_TEMP);
 MyMessage msgAlert(ALERT_ID,V_LIGHT);
 
 void setup()  
-{  
+{
+    // LEDs
+  ledcAttachPin(LEDOK,COK);
+  ledcSetup(COK,5000,8);
+  ledcWrite(COK, INT);  
   // WiFi
   Serial.begin(115200);
   Serial.println("Booting");
@@ -144,11 +149,6 @@ void setup()
   sensors.begin();
   timer.setInterval(INTERVALLE*1000L,GetTemp);
   GetTemp();
-
-  // LEDs
-  ledcAttachPin(LEDOK,COK);
-  ledcSetup(COK,5000,8);
-  ledcWrite(COK, 32);
   }
 
 void presentation() {
@@ -199,7 +199,7 @@ void GetTemp()
       digitalWrite(LEDFROID,LOW);
       digitalWrite(LEDALERT,LOW);
       //digitalWrite(LEDOK,HIGH);
-      ledcWrite(COK, 8);
+      ledcWrite(COK, INT);
       send(msgAlert.set(0));
     }
   } 
