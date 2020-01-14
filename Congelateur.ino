@@ -43,6 +43,8 @@ SimpleTimer timer;
 
 const char* ssid = "ssid";
 const char* password = "pwd";
+
+/*
 // MySensors
 // Enable debug prints to serial monitor
 #define MY_DEBUG 
@@ -51,10 +53,10 @@ const char* password = "pwd";
 #define MY_RFM95_RST_PIN 14
 #define MY_REPEATER_FEATURE
 #define MY_NODE_ID 10
-
+*/
 
 //#include <SPI.h>
-#include <MySensors.h>
+//#include <MySensors.h>
 
 // 1wire
 #define ONE_WIRE_BUS 17
@@ -76,8 +78,8 @@ DallasTemperature sensors(&oneWire);
 #define TCONG   -30     // Température congélation
 
 // Change to V_LIGHT if you use S_LIGHT in presentation below
-MyMessage msgTemp(TEMP_ID,V_TEMP);
-MyMessage msgAlert(ALERT_ID,V_LIGHT);
+//MyMessage msgTemp(TEMP_ID,V_TEMP);
+//MyMessage msgAlert(ALERT_ID,V_LIGHT);
 
 void setup()  
 {
@@ -100,7 +102,7 @@ void setup()
   } 
   
   // Hostname defaults to esp3232-[MAC]
-  ArduinoOTA.setHostname("Congelateur");
+  ArduinoOTA.setHostname("congelateur");
 
   // No authentication by default
   // ArduinoOTA.setPassword("admin");
@@ -151,6 +153,7 @@ void setup()
   GetTemp();
   }
 
+/*
 void presentation() {
   // Register binary input sensor to gw (they will be created as child devices)
   // You can use S_DOOR, S_MOTION or S_LIGHT here depending on your usage. 
@@ -159,6 +162,7 @@ void presentation() {
   present(TEMP_ID, S_TEMP);
   present(ALERT_ID, S_LIGHT);  
 }
+*/
 
 //  Check if digital input has changed and send in new value
 void loop() 
@@ -175,14 +179,14 @@ void GetTemp()
   {
     Serial.print("Temperature for the device 1 (index 0) is: ");
     Serial.println(tempC);
-    send(msgTemp.set(tempC,1));
+//    send(msgTemp.set(tempC,1));
     if (tempC <= TCONG) {
       // Température de congélation: LED BLEUE
       digitalWrite(LEDFROID,HIGH);
       digitalWrite(LEDALERT,LOW);
       //digitalWrite(LEDOK,LOW);
       ledcWrite(COK, 0);
-      send(msgAlert.set(0));
+//      send(msgAlert.set(0));
       
     }
     else if (tempC > TALERT) {
@@ -191,7 +195,7 @@ void GetTemp()
       digitalWrite(LEDALERT,HIGH);
       ledcWrite(COK, 0);
       //digitalWrite(LEDOK,LOW);
-      send(msgAlert.set(1));
+//      send(msgAlert.set(1));
       
     }
     else {
@@ -200,7 +204,7 @@ void GetTemp()
       digitalWrite(LEDALERT,LOW);
       //digitalWrite(LEDOK,HIGH);
       ledcWrite(COK, INT);
-      send(msgAlert.set(0));
+//      send(msgAlert.set(0));
     }
   } 
 }
